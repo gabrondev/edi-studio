@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="EdiStudio.Views.Wizard.TiposRegistroStepView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EdiStudio.Views.Wizard"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Identificador"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+            <TextBox Text="{Binding IdentificadorTipoRegistro, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="3"
+                         Height="28"
+                         Margin="0,0,0,10"/>
+
+            <TextBlock Text="Nome"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+            <TextBox Text="{Binding NomeTipoRegistro, UpdateSourceTrigger=PropertyChanged}"
+                         Height="28"
+                         Margin="0,0,0,10"/>
+
+            <TextBlock Text="Registro pai"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+
+            <TextBox Text="{Binding IdentificadorRegistroPai, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="3"
+                         Height="28"
+                         Margin="0,0,0,10"/>
+
+            <TextBlock Text="Quantidade máxima por pai"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+
+            <TextBox Text="{Binding QtdeMaxOcorrenciasPorRegistroPai, UpdateSourceTrigger=PropertyChanged}"
+                         Height="28"
+                         Margin="0,0,0,10"/>
+
+            <TextBlock Text="Tamanho do registro"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+
+            <TextBox Text="{Binding TamanhoTipoRegistro, UpdateSourceTrigger=PropertyChanged}"
+                         Height="28"
+                         Margin="0,0,0,15"/>
+
+            <Button Content="Adicionar Tipo de Registro"
+                        Command="{Binding AdicionarTipoRegistroCommand}"
+                        Height="32"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="Tipos de registro adicionados"
+                           FontWeight="Semibold"
+                           Margin="0,0,0,5"/>
+
+            <ListBox ItemsSource="{Binding TiposRegistro}"
+                         Height="300">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                                <Run Text="{Binding Identificador}"/>
+                                <Run Text=" - "/>
+                                <Run Text="{Binding Nome}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

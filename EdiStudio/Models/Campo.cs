@@ -2,7 +2,7 @@
 
 namespace EdiStudio.Models
 {
-    internal class Campo
+    public class Campo
     {
         public string Nome { get; set; } = string.Empty;
         public FormatoCampo Formato {  get; set; }

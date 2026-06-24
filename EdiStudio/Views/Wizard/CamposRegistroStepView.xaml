@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="EdiStudio.Views.Wizard.CamposRegistroStepView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EdiStudio.Views.Wizard"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Tipo de Registro"
+                       FontWeight="Semibold"
+                       Margin="0,0,0,5"/>
+            <ComboBox ItemsSource="{Binding TiposRegistro}"
+                      SelectedItem="{Binding TipoRegistroSelecionado}"
+                      Height="28"
+                      Margin="0,0,0,10">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Identificador}"/>
+                            <Run Text=" - "/>
+                            <Run Text="{Binding Nome}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Text="Nome do Campo"
+                       FontWeight="Semibold"
+                       Margin="0,0,0,5"/>
+            <TextBox Text="{Binding NomeCampo, UpdateSourceTrigger=PropertyChanged}"
+                     Height="28"
+                     Margin="0,0,0,10"/>
+            
+            <TextBlock Text="Formato"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,5"/>
+            <ComboBox ItemsSource="{Binding FormatosCampoDisponiveis}"
+                      SelectedItem="{Binding FormatoCampoSelecionado}"
+                      Height="28"
+                      Margin="0,0,0,10"/>
+
+            <TextBlock Text="Tamanho"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,5"/>
+            <TextBox Text="{Binding TamanhoCampo, UpdateSourceTrigger=PropertyChanged}"
+                     Height="28"
+                     Margin="0,0,0,10"/>
+
+            <TextBlock Text="Posição"
+                       FontWeight="Semibold"
+                       Margin="0,0,0,5"/>
+            <TextBox Text="{Binding PosicaoCampo, UpdateSourceTrigger=PropertyChanged}"
+                     Height="28"
+                     Margin="0,0,0,10"/>
+
+            <TextBlock Text="Status"
+                       FontWeight="Semibold"
+                       Margin="0,0,0,5"/>
+            <ComboBox ItemsSource="{Binding StatusCampoDisponiveis}"
+                      SelectedItem="{Binding StatusCampoSelecionado}"
+                      Height="28"
+                      Margin="0,0,0,15"/>
+
+            <Button Content="Adicionar Campo"
+                    Command="{Binding AdicionarCampoCommand}"
+                    Height="32"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="Campos Selecionados"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,5"/>
+
+            <ListBox ItemsSource="{Binding CamposDoRegistroSelecionado}"
+                     Height="330">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Posicao}"/>
+                            <Run Text=" - "/>
+                            <Run Text="{Binding Nome}"/>
+                            <Run Text=" | "/>
+                            <Run Text="{Binding Formato}"/>
+                            <Run Text=" | Tam: "/>
+                            <Run Text="{Binding Tamanho}"/>
+                            <Run Text=" | "/>
+                            <Run Text="{Binding Status}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

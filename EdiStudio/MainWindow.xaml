@@ -5,8 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EdiStudio"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="{Binding Titulo}" Height="600" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Arquivo">
+                <MenuItem 
+                    Header="_Abrir Layout"
+                    Command="{Binding AbrirLayoutCommand}"
+                />
+                <MenuItem 
+                    Header="_Novo Layout"
+                    Command="{Binding NovoLayoutCommand}"
+                />
+            </MenuItem>
+        </Menu>
 
-    </Grid>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusLayout}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid Margin="10">
+            <TextBlock
+                Text="Nenhum arquivo EDI carregado."
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Opacity="0.5"
+            />
+        </Grid>
+    </DockPanel>
 </Window>
