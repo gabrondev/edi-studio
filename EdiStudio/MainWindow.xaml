@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EdiStudio"
+        xmlns:rendering="clr-namespace:EdiStudio.Enums"
         mc:Ignorable="d"
         Title="{Binding Titulo}" Height="600" Width="800">
     <DockPanel>
@@ -17,6 +18,9 @@
                     Header="_Novo Layout"
                     Command="{Binding NovoLayoutCommand}"
                 />
+                <Separator />
+                <MenuItem Header="_Abrir Arquivo EDI"
+                          Command="{Binding AbrirArquivoEdiCommand}" />
             </MenuItem>
         </Menu>
 
@@ -27,13 +31,60 @@
         </StatusBar>
 
         <Grid Margin="10">
-            <TextBlock
-                Text="Nenhum arquivo EDI carregado."
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Opacity="0.5"
-            />
+            <ListBox ItemsSource="{Binding LinhasDocumento}"
+             SelectedItem="{Binding LinhaDocumentoSelecionada}"
+             FontFamily="Consolas"
+             FontSize="13"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ScrollViewer.CanContentScroll="True"
+             VirtualizingPanel.IsVirtualizing="True"
+             VirtualizingPanel.VirtualizationMode="Recycling">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Focusable" Value="True" />
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EhSelecionavel}" Value="False">
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                                <Setter Property="Focusable" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Texto}"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="Normal" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TipoLinha}"
+                                                     Value="{x:Static rendering:TipoLinhaDocumento.TituloTabela}">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding TipoLinha}"
+                                                     Value="{x:Static rendering:TipoLinhaDocumento.Cabecalho}">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </DockPanel>
 </Window>

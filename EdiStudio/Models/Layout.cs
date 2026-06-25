@@ -2,7 +2,7 @@
 
 namespace EdiStudio.Models
 {
-    internal class Layout
+    public class Layout
     {
         public string Nome {  get; set; } = string.Empty;
         public TipoEdi TipoEdi { get; set; }
