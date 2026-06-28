@@ -1,4 +1,5 @@
 ﻿<Window x:Class="EdiStudio.MainWindow"
+        x:Name="RootWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,21 +7,79 @@
         xmlns:local="clr-namespace:EdiStudio"
         xmlns:rendering="clr-namespace:EdiStudio.Enums"
         mc:Ignorable="d"
-        Title="{Binding Titulo}" Height="600" Width="800">
+        Title="EDI Studio" Height="600" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_Arquivo">
-                <MenuItem 
-                    Header="_Abrir Layout"
-                    Command="{Binding AbrirLayoutCommand}"
-                />
-                <MenuItem 
-                    Header="_Novo Layout"
-                    Command="{Binding NovoLayoutCommand}"
-                />
+
+            <MenuItem Header="Arquivo">
+                <MenuItem Header="Salvar" Command="{Binding SalvarArquivoEdiCommand}"/>
+                <MenuItem Header="Salvar Como" Command="{Binding SalvarArquivoEdiComoCommand}"/>
                 <Separator />
-                <MenuItem Header="_Abrir Arquivo EDI"
-                          Command="{Binding AbrirArquivoEdiCommand}" />
+                <MenuItem Header="Abrir"
+                  Command="{Binding AbrirArquivoEdiCommand}" />
+
+                
+
+                <MenuItem Header="Abrir Recente"
+          ItemsSource="{Binding ArquivosEdiRecentes}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header"
+                    Value="{Binding NomeExibicao}" />
+
+                            <Setter Property="ToolTip"
+                    Value="{Binding CaminhoArquivoEdi}" />
+
+                            <Setter Property="Command"
+                    Value="{Binding DataContext.AbrirArquivoEdiRecenteCommand,
+                                    RelativeSource={RelativeSource AncestorType=MenuItem}}" />
+
+                            <Setter Property="CommandParameter"
+                    Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="Layout">
+
+
+
+                <MenuItem Header="Novo"
+                  Command="{Binding NovoLayoutCommand}" />
+
+                <Separator />
+                <MenuItem Header="Abrir"
+                  Command="{Binding AbrirLayoutCommand}" />
+
+                <MenuItem Header="Abrir Recente"
+          ItemsSource="{Binding LayoutsRecentes}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header"
+                    Value="{Binding NomeExibicao}" />
+
+                            <Setter Property="ToolTip"
+                    Value="{Binding CaminhoLayout}" />
+
+                            <Setter Property="Command"
+                    Value="{Binding DataContext.AbrirLayoutRecenteCommand,
+                                    RelativeSource={RelativeSource AncestorType=MenuItem}}" />
+
+                            <Setter Property="CommandParameter"
+                    Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+
+                
+
+            </MenuItem>
+
+            <MenuItem Header="Editar">
+                <MenuItem Header="Excluir linha selecionada"
+              Command="{Binding ExcluirRegistroSelecionadoCommand}"
+              InputGestureText="Delete" />
             </MenuItem>
         </Menu>
 
@@ -31,7 +90,23 @@
         </StatusBar>
 
         <Grid Margin="10">
-            <ListBox ItemsSource="{Binding LinhasDocumento}"
+            <Grid.ColumnDefinitions>
+                <!-- Painel central -->
+                <ColumnDefinition Width="*" MinWidth="300" />
+
+                <!-- Splitter do editor -->
+                <ColumnDefinition Width="{Binding LarguraSplitterEditor}" />
+
+                <!-- Painel direito/editor -->
+                <ColumnDefinition Width="{Binding LarguraPainelEditor, Mode=TwoWay}" MinWidth="0" />
+
+                <!-- Aba lateral quando o editor estiver minimizado -->
+                <ColumnDefinition Width="{Binding LarguraAbaEditor}" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Painel Central -->
+            <ListBox Grid.Column="0"
+             ItemsSource="{Binding LinhasDocumento}"
              SelectedItem="{Binding LinhaDocumentoSelecionada}"
              FontFamily="Consolas"
              FontSize="13"
@@ -54,6 +129,11 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
+                <ListBox.InputBindings>
+                    <KeyBinding Key="Delete"
+                Command="{Binding ExcluirRegistroSelecionadoCommand}" />
+                </ListBox.InputBindings>
+
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
@@ -63,19 +143,19 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Texto}"
-                                   TextWrapping="NoWrap">
+                           TextWrapping="NoWrap">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="FontWeight" Value="Normal" />
 
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TipoLinha}"
-                                                     Value="{x:Static rendering:TipoLinhaDocumento.TituloTabela}">
+                                             Value="{x:Static rendering:TipoLinhaDocumento.TituloTabela}">
                                             <Setter Property="FontWeight" Value="Bold" />
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding TipoLinha}"
-                                                     Value="{x:Static rendering:TipoLinhaDocumento.Cabecalho}">
+                                             Value="{x:Static rendering:TipoLinhaDocumento.Cabecalho}">
                                             <Setter Property="FontWeight" Value="Bold" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -85,6 +165,119 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <!-- Divisor redimensionável -->
+            <GridSplitter Grid.Column="1"
+                  Width="5"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  ResizeBehavior="PreviousAndNext"
+                  ShowsPreview="True" />
+
+            <!-- Painel direito -->
+            <Border Grid.Column="2"
+            Padding="12"
+            BorderThickness="1"
+            BorderBrush="#DDD">
+
+                <DockPanel>
+                    <!-- Cabeçalho do editor -->
+                    <DockPanel DockPanel.Dock="Top"
+                       Margin="0,0,0,12">
+
+                        <Button DockPanel.Dock="Right"
+                        Content="⟩"
+                        Width="24"
+                        Height="24"
+                        Command="{Binding AlternarEditorCommand}"
+                        ToolTip="Minimizar editor" />
+
+                        <StackPanel>
+                            <TextBlock Text="Editor do registro"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Margin="0,0,0,8" />
+
+                            <TextBlock Text="{Binding RegistroSelecionado.TipoRegistro.Identificador, TargetNullValue=Selecione uma linha}"
+                               FontWeight="SemiBold" />
+
+                            <TextBlock Text="{Binding RegistroSelecionado.TipoRegistro.Nome}"
+                               TextWrapping="Wrap"
+                               Margin="0,2,0,4" />
+
+                            <TextBlock Text="{Binding RegistroSelecionado.NumeroLinha, StringFormat=Linha do TXT: {0}}" />
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Campos do registro selecionado -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding RegistroSelecionado.Campos}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="0,0,0,1"
+                                    BorderBrush="#EEE"
+                                    Padding="0,0,0,10"
+                                    Margin="0,0,0,10">
+
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding CampoLayout.Nome}"
+                                               TextWrapping="Wrap">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontWeight" Value="SemiBold" />
+
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding FoiAlterado}" Value="True">
+                                                                <Setter Property="FontWeight" Value="Bold" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                            <TextBlock FontSize="11"
+                                               Opacity="0.65"
+                                               Margin="0,2,0,4">
+                                        <Run Text="Posição: " />
+                                        <Run Text="{Binding CampoLayout.Posicao}" />
+                                        <Run Text=" | Tamanho: " />
+                                        <Run Text="{Binding CampoLayout.Tamanho}" />
+                                        <Run Text=" | " />
+                                        <Run Text="{Binding CampoLayout.Formato}" />
+                                            </TextBlock>
+
+                                            <TextBox Text="{Binding ValorEditavel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             MaxLength="{Binding CampoLayout.Tamanho}"
+                                             FontFamily="Consolas" />
+
+                                            <TextBlock FontSize="11"
+                                               Opacity="0.65"
+                                               Margin="0,4,0,0">
+                                        <Run Text="Original: " />
+                                        <Run Text="{Binding ValorOriginal}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+
+            <!-- Aba lateral para restaurar o editor -->
+            <Button Grid.Column="3"
+            Content="Editor"
+            Command="{Binding AlternarEditorCommand}"
+            Padding="4"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            ToolTip="Restaurar editor"
+                    Margin="8,0,0,0">
+                <Button.LayoutTransform>
+                    <RotateTransform Angle="90" />
+                </Button.LayoutTransform>
+            </Button>
         </Grid>
     </DockPanel>
 </Window>

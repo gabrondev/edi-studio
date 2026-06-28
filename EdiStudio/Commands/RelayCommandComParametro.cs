@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Input;
+
+namespace EdiStudio.Commands
+{
+    public class RelayCommandComParametro<T> : ICommand
+    {
+        private readonly Action<T?> _execute;
+        private readonly Func<T?, bool>? _canExecute;
+
+        public RelayCommandComParametro(
+            Action<T?> execute,
+            Func<T?, bool>? canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        public event EventHandler? CanExecuteChanged;
+
+        public bool CanExecute(object? parameter)
+        {
+            return _canExecute is null || _canExecute((T?)parameter);
+        }
+
+        public void Execute(object? parameter)
+        {
+            _execute((T?)parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+}

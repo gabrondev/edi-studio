@@ -9,5 +9,7 @@ namespace EdiStudio.Services
     public interface IEdiDocumentRendererService
     {
         DocumentoEdiRenderizado Renderizar(ArquivoEdiParseado arquivo);
+
+        string RenderizarLinhaRegistro(RegistroEdiNode registro);
     }
 }

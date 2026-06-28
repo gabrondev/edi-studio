@@ -175,6 +175,15 @@ namespace EdiStudio.Services
             return string.Join("|", celulas);
         }
 
+        public string RenderizarLinhaRegistro(RegistroEdiNode registro)
+        {
+            List<Campo> campos = registro.TipoRegistro.Campos
+                .OrderBy(campo => campo.Posicao)
+                .ToList();
+
+            return MontarLinhaRegistro(registro, campos);
+        }
+
         private string RenderizarCelula(string valor, int largura)
         {
             string valorAjustado = valor.Length > largura
