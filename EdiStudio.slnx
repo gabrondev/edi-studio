@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="EdiStudio.Tests/EdiStudio.Tests.csproj" Id="58375e66-2d5a-45ba-a4a0-2dda75685445" />
   <Project Path="EdiStudio/EdiStudio.csproj" />
 </Solution>
