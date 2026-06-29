@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EdiStudio.Models.Parsing
+﻿namespace EdiStudio.Models.Parsing
 {
+    /// <summary>
+    /// Representa uma ocorrência concreta de registro reconhecida em uma
+    /// linha de documento EDI.
+    /// </summary>
+    /// <remarks>
+    /// Mantém a definição do tipo de registro, os valores extraídos e as
+    /// relações hierárquicas de pai e filhos.
+    /// </remarks>
     public class RegistroEdiNode
     {
         public int NumeroLinha { get; set; }
