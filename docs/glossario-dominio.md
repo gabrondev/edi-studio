@@ -29,6 +29,20 @@ Ocorrência concreta de um tipo de registro dentro de um documento.
 
 Código atual: `RegistroEdiNode`.
 
+## Definição de tipo de registro
+
+Metadados do layout que descrevem uma categoria de linha EDI.
+
+A definição contém o identificador de três caracteres, o tamanho
+esperado, os campos e sua possível relação hierárquica com outro tipo
+de registro.
+
+Código atual: `TipoRegistro`.
+
+Não representa uma ocorrência concreta encontrada no documento.
+
+Nome proposto: `DefinicaoRegistroEdi`.
+
 ## Valor de campo EDI
 
 Valor original e valor atual de um campo dentro de um registro concreto.

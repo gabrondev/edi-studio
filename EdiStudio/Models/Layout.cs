@@ -2,6 +2,10 @@
 
 namespace EdiStudio.Models
 {
+    /// <summary>
+    /// Define a estrutura utilizada para interpretar documentos de um
+    /// determinado padrão EDI.
+    /// </summary>
     public class Layout
     {
         public string Nome {  get; set; } = string.Empty;

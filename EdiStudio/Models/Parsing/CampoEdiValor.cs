@@ -3,6 +3,14 @@ using System.Runtime.CompilerServices;
 
 namespace EdiStudio.Models.Parsing
 {
+    /// <summary>
+    /// Representa o valor original e o valor atual de um campo pertencente
+    /// a uma ocorrência concreta de registro EDI.
+    /// </summary>
+    /// <remarks>
+    /// Ajusta o valor ao tamanho definido no layout e informa alterações
+    /// para a interface por meio de <see cref="INotifyPropertyChanged"/>
+    /// </remarks>
     public class CampoEdiValor : INotifyPropertyChanged
     {
         private string _valorAtual = string.Empty;

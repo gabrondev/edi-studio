@@ -5,6 +5,15 @@ using System.IO;
 
 namespace EdiStudio.Services
 {
+    /// <summary>
+    /// Serializa um documento EDI em linhas de largura fixa e grava o
+    /// resultado em um arquivo TXT.
+    /// </summary>
+    /// <remarks>
+    /// Os campos conhecidos são sobrescritos conforme suas posições no
+    /// layout. Caracteres da linha original fora dessas posições são 
+    /// preservados pela implementação atual.
+    /// </remarks>
     public class EdiWriterService : IEdiWriterService
     {
         public void Salvar(ArquivoEdiParseado arquivo, string caminhoArquivo)

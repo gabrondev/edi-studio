@@ -1,14 +1,28 @@
 ﻿using EdiStudio.Models;
 using EdiStudio.Models.Parsing;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace EdiStudio.Services
 {
     internal class EdiParserService : IEdiParserService
     {
+        /// <summary>
+        /// Lê um arquivo TXT e converte as linhas reconhecidas pelo layout em
+        /// uma representação estruturada de documento EDI.
+        /// </summary>
+        /// <remarks>
+        /// A implementação atual ignora linhas vazias, linhas com menos de três
+        /// caracteres e linhas cujo identificador não exista no layout.
+        /// </remarks>
+        /// <param name="caminhoArquivo">
+        /// Caminho do arquivo TXT que será interpretado.
+        /// </param>
+        /// <param name="layout">
+        /// Layout utilizado para reconhecer registros e extrair campos.
+        /// </param>
+        /// <returns>
+        /// Documento EDI contendo os registros reconhecidos.
+        /// </returns>
         public ArquivoEdiParseado Parse(string caminhoArquivo, Layout layout)
         {
             string[] linhas = File.ReadAllLines(caminhoArquivo);
